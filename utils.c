@@ -51,13 +51,14 @@ void	print_error(char *str)
 	}
 }
 
-int	check_char(char c, int i)
+int	check_char(char *str, int i)
 {
 	if (i % 2 == 0)
-		return (c >= '1' && c <= '9');
-	return (c == ' ');
+		return (str[i] >= '1' && str[i] <= '9');
+	if (str[i] != ' ' || str[i + 1] == '\0')
+		return (0);
+	return (1);
 }
-
 char	*ft_split(char *str)
 {
 	char	*res;
