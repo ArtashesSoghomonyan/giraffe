@@ -51,6 +51,13 @@ void	print_error(char *str)
 	}
 }
 
+int	check_char(char c, int i)
+{
+	if (i % 2 == 0)
+		return (c >= '1' && c <= '9');
+	return (c == ' ');
+}
+
 char	*ft_split(char *str)
 {
 	char	*res;
@@ -64,23 +71,15 @@ char	*ft_split(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (i % 2 == 0)
-		{
-			if (str[i] < '1' || str[i] > '9')
-			{
-				free(res);
-				return (NULL);
-			}
-			res[j++] = str[i];
-		}
-		else if (str[i] != ' ')
+		if (!check_char(str[i], i))
 		{
 			free(res);
 			return (NULL);
 		}
+		if (i % 2 == 0)
+			res[j++] = str[i];
 		i++;
 	}
-
 	res[j] = '\0';
 	return (res);
 }
