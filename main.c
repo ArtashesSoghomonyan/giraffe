@@ -25,13 +25,13 @@ int	check_input(int argc, char **argv, char **input)
 
 	if (argc != 2)
 	{
-		print_error("Invalid argument count\n");
+		print_error("Error\n");
 		return (0);
 	}
 	*input = ft_split(argv[1]);
 	if (!*input)
 	{
-		print_error("Invalid input format\n");
+		print_error("Error\n");
 		return (0);
 	}
 	s = check_args(*input);
@@ -51,18 +51,18 @@ int	run(char *input, int s)
 
 	matrix = create_matrix(s);
 	if (!matrix)
-		return (print_error("Memory failed\n"), 0);
+		return (print_error("Error\n"), 0);
 	walls = args_to_walls(input, s);
 	if (!walls)
 	{
 		free_matrix(matrix, s);
-		return (print_error("Memory failed\n"), 0);
+		return (print_error("Error\n"), 0);
 	}
 	found = fill(matrix, s, walls, 0);
 	if (found)
 		print_matrix(matrix, s);
 	else
-		print_error("No solution found\n");
+		print_error("Error\n");
 	free_matrix(walls, 4);
 	free_matrix(matrix, s);
 	return (found);
