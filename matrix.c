@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 
 int	ft_sqrt(int num);
 
@@ -75,28 +76,28 @@ void	free_matrix(char **matrix, int size)
 	free(matrix);
 }
 
-char	**args_to_walls(int argc, char *argv[])
+char	**args_to_walls(char *str, int s)
 {
 	char	**res;
 	int		i;
 	int		j;
-	int		c;
 
 	res = malloc(4 * sizeof(char *));
 	if (!res)
 		return (NULL);
 	i = 0;
-	c = 1;
 	while (i < 4)
 	{
-		res[i] = malloc(ft_sqrt(argc - 1) * sizeof(char));
+		res[i] = malloc(s * sizeof(char));
 		if (!res[i])
-			return (NULL);
-		j = 0;
-		while (j < ft_sqrt(argc - 1))
 		{
-			res[i][j] = argv[c][0];
-			c++;
+			free_matrix(res, i);
+			return (NULL);
+		}
+		j = 0;
+		while (j < s)
+		{
+			res[i][j] = str[i * s + j];
 			j++;
 		}
 		i++;

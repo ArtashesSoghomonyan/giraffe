@@ -16,29 +16,30 @@ int		ft_sqrt(int num);
 void	print_error(char *str);
 int		ft_strlen(char *str);
 
-int	check_args(int argc, char *argv[])
+int	check_args(char *str)
 {
 	int	i;
 	int	s;
+	int	l;
 
-	if (argc != 2)
-	{
-		print_error("Argument count error\n");
-		return (-1);
+	l = ft_strlen(str);
+	if (l % 4 != 0){
+		print_error("Arguments count error\n");
+		return (0);
 	}
-	
-	i = 1;
-	while (i < argc)
+	s = l / 4;
+	if (s < 4 || s > 9){
+		print_error("Invalid count\n");
+		return (0);
+	}
+	i = 0;
+	while (str[i])
 	{
-		if (ft_strlen(argv[i]) != 1 || argv[i][0] < '0' || argv[i][0] > '9'
-			|| !(argv[i][0] - '0' >= 1 && argv[i][0] - '0' <= s))
-		{
-			print_error("Wrong arguments error\n");
-			return (-1);
-		}
+		if (str[i] < '1' || str[i] > s + '0')
+			return (print_error("Invalid arguments\n"), 0);
 		i++;
 	}
-	return (0);
+	return (s);
 }
 
 int	valid(char **matrix, int size, int pos, char num)
@@ -48,8 +49,8 @@ int	valid(char **matrix, int size, int pos, char num)
 	int	col;
 
 	i = 0;
-	row = pos / 4;
-	col = pos % 4;
+	row = pos / size;
+	col = pos % size;
 	while (i < size)
 	{
 		if (matrix[row][i] == num || matrix[i][col] == num)
@@ -59,7 +60,23 @@ int	valid(char **matrix, int size, int pos, char num)
 	return (1);
 }
 
-int	check_wall(char **matrix, int size, int index, int dir)
+int	get_height(char **m, int s, int pos, int i)
+{
+	int	index;
+	int	dir;
+
+	dir = pos / s;
+	index = pos % s;
+	if (dir == 0)
+		return (m[i][index] - '0');
+	if (dir == 1)
+		return (m[s - 1 - i][index] - '0');
+	if (dir == 2)
+		return (m[index][i] - '0');
+	return (m[index][s - 1 - i] - '0');
+}
+
+int	check_wall(char **m, int s, int index, int dir)
 {
 	int	i;
 	int	max;
@@ -69,14 +86,9 @@ int	check_wall(char **matrix, int size, int index, int dir)
 	i = 0;
 	max = 0;
 	count = 0;
-	while (i < size)
+	while (i < s)
 	{
-		if (dir < 2)
-			height = matrix[dir * (size - 3 * i)
-				+ i][index] - '0';
-		else
-			height = matrix[index][(dir - 2) * (size - 3 * i)
-				+ i] - '0';
+		height = get_height(m, s, dir * s + index, i);
 		if (height > max)
 		{
 			max = height;

@@ -53,22 +53,34 @@ void	print_error(char *str)
 
 char	*ft_split(char *str)
 {
-	int		i;
 	char	*res;
+	int		i;
+	int		j;
 
 	res = malloc(ft_strlen(str) + 1);
 	if (!res)
 		return (NULL);
 	i = 0;
+	j = 0;
 	while (str[i])
 	{
-		if (i % 2 == 0 && (str[i] < '1' || str[i] > '9'))
+		if (i % 2 == 0)
+		{
+			if (str[i] < '1' || str[i] > '9')
+			{
+				free(res);
+				return (NULL);
+			}
+			res[j++] = str[i];
+		}
+		else if (str[i] != ' ')
+		{
+			free(res);
 			return (NULL);
-		if (i % 2 == 1 && str[i] != ' ')
-			return (NULL);
-		res[i / 2] = str[i];
+		}
 		i++;
 	}
-	res[i] = '\0';
+
+	res[j] = '\0';
 	return (res);
 }
