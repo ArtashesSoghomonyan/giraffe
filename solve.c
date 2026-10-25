@@ -24,19 +24,19 @@ int	check_args(char *str)
 
 	l = ft_strlen(str);
 	if (l % 4 != 0){
-		print_error("Arguments count error\n");
+		print_error("Error\n");
 		return (0);
 	}
 	s = l / 4;
 	if (s < 4 || s > 9){
-		print_error("Invalid count\n");
+		print_error("Error\n");
 		return (0);
 	}
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] < '1' || str[i] > s + '0')
-			return (print_error("Invalid arguments\n"), 0);
+			return (print_error("Error\n"), 0);
 		i++;
 	}
 	return (s);
